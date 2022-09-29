@@ -51,6 +51,7 @@ class Rest_Reviews_Public {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		add_shortcode('james_reviews', array($this, 'display_reviews'));
 
 	}
 
@@ -97,6 +98,60 @@ class Rest_Reviews_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/rest-reviews-public.js', array( 'jquery' ), $this->version, false );
+
+	}
+
+	public function display_reviews($atts)
+	{
+		
+		$a = shortcode_atts(array(
+			'id' => 'rest_reviews',
+			'count' => 0, // for unlimited
+			'url' => ''
+		), $atts);
+		# code...
+
+		$api_url = $a['url'];
+
+		$reviews_html = '<section class="rest_reviews" id="'.$a['id'].'">';
+
+		//curl to get json data
+
+		$ch = curl_init();
+
+		curl_setopt_array($ch, array(
+		  CURLOPT_URL => 'https://bestwebsite.com/data-1.json',
+		  CURLOPT_RETURNTRANSFER => true,
+		  CURLOPT_ENCODING => '',
+		  CURLOPT_MAXREDIRS => 10,
+		  CURLOPT_TIMEOUT => 0,
+		  CURLOPT_FOLLOWLOCATION => true,
+		  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+		  CURLOPT_CUSTOMREQUEST => 'GET',
+		));
+
+		$response = curl_exec($ch);
+
+		if ($response) {
+			$reviews = json_decode($response);
+			$reviews = (array)( (array)$reviews )['toplists'];
+			if ($reviews && count((array)$reviews) > 0) {
+				$reviews_list = (array)$reviews;
+				foreach ($reviews_list as $key => $value) {
+					$__reviews = (array)$reviews_list[$key];
+					foreach ($__reviews as $review) {
+						$review = (array)$review;
+						$review_info = (array)($review['info']);
+						echo 'Bonus:' . ' => ' . $review_info['bonus'];
+					}
+				}
+			}
+		}
+
+		$reviews_html .= '</section>';
+
+
+		return $reviews_html;
 
 	}
 
