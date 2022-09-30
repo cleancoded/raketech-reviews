@@ -2,3 +2,15 @@
  * All of the CSS for your public-facing functionality should be
  * included in this file.
  */
+ .rest_reviews ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.rest_reviews ul li{
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: space-between;
+}
