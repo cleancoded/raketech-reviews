@@ -153,7 +153,7 @@ class Rest_Reviews_Public {
 							$rating_html .= '<i class="fa fa-star filled"></i>';
 						}
 						for ($j=$rating; $j < 5; $j++) { 
-							$rating_html .= '<i class="fa fa-star"></i>';
+							$rating_html .= '<i class="fa fa-star nfill"></i>';
 						}
 
 						$features = '<ul>';
