@@ -7,10 +7,38 @@
     padding: 0;
     margin: 0;
 }
-.rest_reviews ul li{
+.rest_reviews > ul > li{
     display: flex;
     flex-wrap: nowrap;
     flex-direction: row;
     gap: 20px;
     justify-content: space-between;
+    padding: 20px 10px;
+    border-bottom: 2px solid #CCC;
+}
+.play_url_btn{
+    display: block;
+    padding: 10px 15px;
+    background: green;
+    text-align: center;
+    max-width: 200px;
+    margin: auto;
+    border-radius: 10px;
+    color: #FFF!important;
+    margin-bottom: 10px;
+}
+.rating_and_bonus span,
+.logo span,
+.play_url span{
+	display: block;
+}
+.rating_and_bonus, .logo,
+.play_url{
+	text-align: center;
+}
+.fa.nfill{
+	color: #EEE;
+}
+.fa.filled{
+	color: orange;
 }
