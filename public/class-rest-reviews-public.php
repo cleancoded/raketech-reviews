@@ -73,9 +73,8 @@ class Rest_Reviews_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/rest-reviews-public.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style( 'font-awesome', 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css' );
 	}
 
 	/**
@@ -113,7 +112,7 @@ class Rest_Reviews_Public {
 
 		$api_url = $a['url'];
 
-		$reviews_html = '<section class="rest_reviews" id="'.$a['id'].'">';
+		$reviews_html = '<section class="rest_reviews" id="'.$a['id'].'"><ul>';
 
 		//curl to get json data
 
@@ -142,13 +141,52 @@ class Rest_Reviews_Public {
 					foreach ($__reviews as $review) {
 						$review = (array)$review;
 						$review_info = (array)($review['info']);
-						echo 'Bonus:' . ' => ' . $review_info['bonus'];
+						$logo_url = $review['logo'];
+						$review_url = '/'.$review['brand_id'];
+						$features_list = $review_info['features'];
+						$rating = $review_info['rating'];
+						$play_url = $review['play_url'];
+						$terms = $review['terms_and_conditions'];
+						$bonus = $review_info['bonus'];
+						$rating_html = '';
+						for ($i=0; $i < $rating; $i++) { 
+							$rating_html .= '<i class="fa fa-star filled"></i>';
+						}
+						for ($j=$rating; $j < 5; $j++) { 
+							$rating_html .= '<i class="fa fa-star"></i>';
+						}
+
+						$features = '<ul>';
+						foreach ($features_list as $feature_text) {
+							$features .= '<li>'.$feature_text.'</li>';
+						}
+						$features .= '</ul>';
+
+						$review_html = '<li>';
+						$review_html .= '<div class="logo">
+											<span><img src="'.$logo_url.'" alt="" width="" height="" /></span>
+											<span><a class="review_link" href="'.$review_url.'">Review</a></span>
+										</div>';
+						$review_html .= '<div class="rating_and_bonus">
+											<span class="rating">'.$rating_html.'</span>
+											<span class="bonus">'.$bonus.'</span>
+										</div>';
+						$review_html .= '<div class="features">
+											'.$features.'
+										</div>';
+						$review_html .= '<div class="play_url">
+											<span class="play_url_btn"><a href="'.$play_url.'">Play Now</a></span>
+											<span>'.$terms.'</span>
+										</div>';
+
+						$review_html .= '</li>';
+						$reviews_html .= $review_html;
 					}
 				}
 			}
 		}
 
-		$reviews_html .= '</section>';
+		$reviews_html .= '</ul></section>';
 
 
 		return $reviews_html;
